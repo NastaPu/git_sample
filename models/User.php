@@ -16,9 +16,8 @@ use yii\web\IdentityInterface;
 class User extends \yii\db\ActiveRecord
 implements IdentityInterface
 {
-    /**
-     * @inheritdoc
-     */
+
+
     public static function tableName()
     {
         return 'user';
@@ -48,6 +47,10 @@ implements IdentityInterface
             'password' => 'Password',
         ];
     }
+    public function getPosts()
+    {
+        return $this->hasMany(Post::className(), ['author_id' => 'id']);
+    }
     public static function findIdentity($id)
     {
         return static::findOne($id);
@@ -55,7 +58,7 @@ implements IdentityInterface
 
     public function getId()
     {
-        return $this->ID;
+        return $this->id;
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -77,7 +80,8 @@ implements IdentityInterface
         return User::find()->where(['username' => $username])->one();
     }
     public function validatePassword($password) {
-        return ($this->password==$password) ? true : false;
+        //echo $this->password;
+        return ($this->password == $password) ? true : false;
     }
     public static function UserId() {
         $userid=User::findOne(['username'=>'admin']);

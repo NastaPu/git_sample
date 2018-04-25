@@ -35,21 +35,27 @@ class CommentController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Comment::find(),
-        ]);
+        $comments = Comment::find()->orderBy('id desc')->all();
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'comments' => $comments
         ]);
     }
 
-    /**
-     * Displays a single Comment model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    public function actionAllow($id){
+        $allow=Comment::findOne($id);
+        $allow->status = 1;
+        $allow->save(false);
+
+        return $this->redirect(['index']);
+    }
+    public function actionBlock($id){
+        $block=Comment::findOne($id);
+        $block->status = 0;
+        $block->save(false);
+
+        return $this->redirect(['index']);
+    }
     public function actionView($id)
     {
         return $this->render('view', [

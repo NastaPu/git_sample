@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Comment;
 use app\models\Tag;
+use app\models\User;
 use app\models\CommentForm;
 use Yii;
 use yii\filters\AccessControl;
@@ -107,13 +108,10 @@ public function actionIndex()
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
-
-        $model->password = '';
         return $this->render('login', [
             'model' => $model,
         ]);
     }
-
     public function actionLogout()
     {
         Yii::$app->user->logout();
