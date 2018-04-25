@@ -64,7 +64,7 @@ public function actionIndex()
     {
         //$model = new Post();
         $query = Post::find()->where(['status' => Post::STATUS_PUBLISHED])->orderBy('update_time desc');
-        $page = new Pagination(['totalCount' => $query->count(), 'pageSize' => 10]);
+        $page = new Pagination(['totalCount' => $query->count(), 'pageSize' => 1]);
         $posts = $query->offset($page->offset)
             ->limit($page->limit)
             ->all();
@@ -72,6 +72,13 @@ public function actionIndex()
         return $this->render('index', [
             'posts' => $posts,
             'page' => $page,
+        ]);
+    }
+    public function actionView($id)
+    {
+        $post=Post::findOne($id);
+        return $this->render('view',[
+            'post'=>$post,
         ]);
     }
 
