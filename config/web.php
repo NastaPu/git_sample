@@ -43,19 +43,7 @@ $config = [
             ],
         ],
         'db' => $db,
-        'urlManager'=>[
-             'class' => 'yii\web\UrlManager',
-             'enablePrettyUrl' => true,
-             //'showScriptName' => false,
-             'rules'=>[
-                '/' => 'site/index',
-                '<action:\w+ >' => 'site/<action>',
-                'site/<id:\d+>/<title:.*?>'=>'site/view',
-                /*'posts/<tag:.*?>'=>'post/index',*/
-                'admin/<id:\d+>'=>'post/update',
-                '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-             ],
-        ],
+
     ],
     'modules' => [
         'admin' => [

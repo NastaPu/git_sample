@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `post`.
  */
-class m180425_120156_create_post_table extends Migration
+class m180425_170425_create_post_table extends Migration
 {
     public function safeUp()
     {
@@ -16,6 +16,7 @@ class m180425_120156_create_post_table extends Migration
             'content' => $this->text(),
             'create_time' => $this->date(),
             'update_time' => $this->date(),
+            'status' => $this->integer(),
             'author_id' => $this->integer(),
             'tag_id' => $this->integer(),
         ]);

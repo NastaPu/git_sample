@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\Lookup;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Post */
@@ -20,11 +22,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'create_time')->textInput() ?>
 
-    <?= $form->field($model, 'update_time')->textInput() ?>
+    <?
+    $status=Lookup::find()->where(['type'=>'PostStatus'])->all();
+    $items=ArrayHelper::map($status,'code','name');
+    $params = [
+        'prompt' => 'Укажите статус'
+    ];
+    echo $form->field($model, 'status')->dropDownList($items,$params);?>
 
-    <?= $form->field($model, 'author_id')->textInput() ?>
 
-    <?= $form->field($model, 'tag_id')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

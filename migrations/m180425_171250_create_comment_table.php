@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `comment`.
  */
-class m180425_120403_create_comment_table extends Migration
+class m180425_171250_create_comment_table extends Migration
 {
     public function safeUp()
     {

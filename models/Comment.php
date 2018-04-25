@@ -58,23 +58,8 @@ class Comment extends \yii\db\ActiveRecord
             'post_id' => 'Post ID',
         ];
     }
-    public function beforeSave($insert)
-    {
-        if (!parent::beforeSave($insert)) {
-            return false;
-        }
-        if($this->isNewRecord){
-            $this->update_time=date('Y-m-d');
-        } else
-            $this->update_time=date('Y-m-d');
-        return true;
-    }
-    public function afterDelete()
-    {
-        parent::afterDelete();
-        Comment::deleteAll('post_id'.$this->ID);
-        //Tag::updateFrequency()
-    }
+
+
     public function getPost()
     {
         return $this->hasOne(Post::className(), ['id' => 'post_id']);

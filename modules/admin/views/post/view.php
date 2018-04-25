@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'content:ntext',
             'create_time',
             'update_time',
+            'status',
             'author_id',
             'tag_id',
         ],
