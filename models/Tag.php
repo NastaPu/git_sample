@@ -43,6 +43,6 @@ class Tag extends \yii\db\ActiveRecord
     }
     public function getPost()
     {
-        return $this->hasMany(Post::className(), ['tag_id' => 'ID']);
+        return $this->hasMany(Post::className(), ['tag_id' => 'id']);
     }
 }

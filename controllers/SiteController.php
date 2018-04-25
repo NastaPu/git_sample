@@ -65,14 +65,19 @@ public function actionIndex()
     {
         //$model = new Post();
         $query = Post::find()->where(['status' => Post::STATUS_PUBLISHED])->orderBy('update_time desc');
-        $page = new Pagination(['totalCount' => $query->count(), 'pageSize' => 1]);
+        $page = new Pagination(['totalCount' => $query->count(), 'pageSize' => 10]);
         $posts = $query->offset($page->offset)
             ->limit($page->limit)
             ->all();
 
+        $lastComments = Comment::find()->orderBy('CREATE_TIME desc')->limit(3)->all();
+        $tags = Tag::find()->all();
+
         return $this->render('index', [
             'posts' => $posts,
             'page' => $page,
+            'lastComments'=>$lastComments,
+            'tags'=>$tags,
         ]);
     }
     public function actionView($id)
@@ -97,6 +102,19 @@ public function actionIndex()
                 return $this->redirect(['site/view', 'id' => $id ]);
             }
         }
+    }
+    public function actionTag($id)
+    {
+        $query = Post::find()->where(['tag_id'=>$id]);
+        $page = new Pagination(['totalCount' => $query->count(), 'pageSize' => 2]);
+        $postTag = $query->offset($page->offset)
+            ->limit($page->limit)
+            ->all();
+
+        return $this->render('tag',[
+            'postTag' => $postTag,
+            'page' => $page,
+        ]);
     }
     public function actionLogin()
     {

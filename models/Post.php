@@ -79,7 +79,8 @@ class Post extends \yii\db\ActiveRecord
         return $this->hasOne(Tag::className(), ['id' => 'tag_id']);
     }
 
-    public function saveTag($tag_id){
+    public function saveTag($tag_id)
+    {
         $tag = Tag::findOne($tag_id);
         $this->link('tag',$tag);
     }
