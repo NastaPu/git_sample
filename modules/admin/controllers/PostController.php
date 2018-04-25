@@ -8,6 +8,8 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Tag;
+use yii\helpers\ArrayHelper;
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -44,12 +46,6 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Post model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -57,11 +53,26 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Post model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+    public function actionTag($id)
+    {
+        $post = $this->findModel($id);
+        $selectTag = $post->tag->id;
+        $tag = Tag::find()->all();
+        $items = ArrayHelper::map($tag,'id','name');
+
+        if(Yii::$app->request->isPost) {
+            $tag_id = Yii::$app->request->post('tag');
+            $post->saveTag($tag_id);
+            return $this->redirect(['view','id' => $post->id]);
+        }
+
+        return $this->render('tag',[
+            'post' => $post,
+            'selectTag' => $selectTag,
+            'items' => $items,
+        ]);
+
+    }
     public function actionCreate()
     {
         $model = new Post();

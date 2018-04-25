@@ -22,7 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ])?>
+        <?= Html::a('Tag', ['post/tag', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+
     </p>
 
     <?= DetailView::widget([
