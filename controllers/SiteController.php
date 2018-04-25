@@ -76,12 +76,27 @@ public function actionIndex()
     }
     public function actionView($id)
     {
-        $post=Post::findOne($id);
+        $post = Post::findOne($id);
+        $comments = $post->getPostComments();
+        $commentForm = new CommentForm();
         return $this->render('view',[
-            'post'=>$post,
+            'post' => $post,
+            'comments' => $comments,
+            'commentForm' => $commentForm,
         ]);
     }
 
+    public function actionComment($id)
+    {
+        $commentForm = new CommentForm();
+        if(Yii::$app->request->isPost) {
+            $commentForm->load(Yii::$app->request->post());
+
+            if($commentForm->saveComment($id)){
+                return $this->redirect(['site/view', 'id' => $id ]);
+            }
+        }
+    }
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {

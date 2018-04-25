@@ -38,9 +38,9 @@ class Post extends \yii\db\ActiveRecord
         return [
             [['title','content','description','status'], 'required'],
             [['content'], 'string'],
-            [['create_time'], 'date', 'format'=>'php: Y-m-d'],
+            [['create_time'], 'date', 'format' => 'php: Y-m-d'],
             [['create_time'],'default','value' => date('Y-m-d')],
-            [['status'], 'in', 'range'=>[1,2,3]],
+            [['status'], 'in', 'range' => [1,2,3]],
             [['title'], 'string', 'max' => 30],
             [['author_id'],'default','value' => User::UserId()],
         ];
@@ -69,9 +69,9 @@ class Post extends \yii\db\ActiveRecord
             return false;
         }
         if($this->isNewRecord){
-            $this->update_time=date('Y-m-d');
+            $this->update_time = date('Y-m-d');
         } else
-            $this->update_time=date('Y-m-d');
+            $this->update_time = date('Y-m-d');
         return true;
     }
     public function getTag()
@@ -85,9 +85,14 @@ class Post extends \yii\db\ActiveRecord
         Comment::deleteAll('post_id'.$this->id);
         //Tag::updateFrequency()
     }
-
     public function getComments()
     {
         return $this->hasMany(Comment::className(), ['post_id' => 'id']);
     }
+    public function getPostComments()
+    {
+        return $this->getComments()->where('status=1')->all();
+    }
+
+
 }
