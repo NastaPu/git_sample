@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use app\models\Comment;
@@ -15,13 +14,11 @@ use app\models\LoginForm;
 use app\models\Post;
 use yii\data\Pagination;
 
-class SiteController extends Controller
-{
+class SiteController extends Controller {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -41,8 +38,7 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function actions()
-    {
+    public function actions() {
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -61,8 +57,7 @@ class SiteController extends Controller
      */
 
 
-public function actionIndex()
-    {
+    public function actionIndex() {
         //$model = new Post();
         $query = Post::find()->where(['status' => Post::STATUS_PUBLISHED])->orderBy('update_time desc');
         $page = new Pagination(['totalCount' => $query->count(), 'pageSize' => 10]);
@@ -76,48 +71,47 @@ public function actionIndex()
         return $this->render('index', [
             'posts' => $posts,
             'page' => $page,
-            'lastComments'=>$lastComments,
-            'tags'=>$tags,
+            'lastComments' => $lastComments,
+            'tags' => $tags,
         ]);
     }
-    public function actionView($id)
-    {
+
+    public function actionView($id) {
         $post = Post::findOne($id);
         $comments = $post->getPostComments();
         $commentForm = new CommentForm();
-        return $this->render('view',[
+        return $this->render('view', [
             'post' => $post,
             'comments' => $comments,
             'commentForm' => $commentForm,
         ]);
     }
 
-    public function actionComment($id)
-    {
+    public function actionComment($id) {
         $commentForm = new CommentForm();
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $commentForm->load(Yii::$app->request->post());
 
-            if($commentForm->saveComment($id)){
-                return $this->redirect(['site/view', 'id' => $id ]);
+            if ($commentForm->saveComment($id)) {
+                return $this->redirect(['site/view', 'id' => $id]);
             }
         }
     }
-    public function actionTag($id)
-    {
-        $query = Post::find()->where(['tag_id'=>$id]);
+
+    public function actionTag($id) {
+        $query = Post::find()->where(['tag_id' => $id]);
         $page = new Pagination(['totalCount' => $query->count(), 'pageSize' => 2]);
         $postTag = $query->offset($page->offset)
             ->limit($page->limit)
             ->all();
 
-        return $this->render('tag',[
+        return $this->render('tag', [
             'postTag' => $postTag,
             'page' => $page,
         ]);
     }
-    public function actionLogin()
-    {
+
+    public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -130,8 +124,8 @@ public function actionIndex()
             'model' => $model,
         ]);
     }
-    public function actionLogout()
-    {
+
+    public function actionLogout() {
         Yii::$app->user->logout();
 
         return $this->goHome();

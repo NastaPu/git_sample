@@ -19,38 +19,34 @@ use Yii;
  *
  * @property Comment[] $comments
  */
-class Post extends \yii\db\ActiveRecord
-{
-    const STATUS_DRAFT=1;
-    const STATUS_PUBLISHED=2;
-    const STATUS_ARCHIVED=3;
+class Post extends \yii\db\ActiveRecord {
+    const STATUS_DRAFT = 1;
+    const STATUS_PUBLISHED = 2;
+    const STATUS_ARCHIVED = 3;
 
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'post';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['title','content','description','status'], 'required'],
+            [['title', 'content', 'description', 'status'], 'required'],
             [['content'], 'string'],
             [['create_time'], 'date', 'format' => 'php: Y-m-d'],
-            [['create_time'],'default','value' => date('Y-m-d')],
-            [['status'], 'in', 'range' => [1,2,3]],
+            [['create_time'], 'default', 'value' => date('Y-m-d')],
+            [['status'], 'in', 'range' => [1, 2, 3]],
             [['title'], 'string', 'max' => 30],
-            [['author_id'],'default','value' => User::UserId()],
+            [['author_id'], 'default', 'value' => User::UserId()],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'title' => 'Title',
@@ -63,39 +59,39 @@ class Post extends \yii\db\ActiveRecord
             'tag_id' => 'Tag ID',
         ];
     }
-    public function beforeSave($insert)
-    {
+
+    public function beforeSave($insert) {
         if (!parent::beforeSave($insert)) {
             return false;
         }
-        if($this->isNewRecord){
+        if ($this->isNewRecord) {
             $this->update_time = date('Y-m-d');
-        } else
+        } else {
             $this->update_time = date('Y-m-d');
+        }
         return true;
     }
-    public function getTag()
-    {
+
+    public function getTag() {
         return $this->hasOne(Tag::className(), ['id' => 'tag_id']);
     }
 
-    public function saveTag($tag_id)
-    {
+    public function saveTag($tag_id) {
         $tag = Tag::findOne($tag_id);
-        $this->link('tag',$tag);
+        $this->link('tag', $tag);
     }
-    public function afterDelete()
-    {
+
+    public function afterDelete() {
         parent::afterDelete();
-        Comment::deleteAll('post_id'.$this->id);
+        Comment::deleteAll('post_id' . $this->id);
         //Tag::updateFrequency()
     }
-    public function getComments()
-    {
+
+    public function getComments() {
         return $this->hasMany(Comment::className(), ['post_id' => 'id']);
     }
-    public function getPostComments()
-    {
+
+    public function getPostComments() {
         return $this->getComments()->where('status=1')->all();
     }
 

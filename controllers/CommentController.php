@@ -12,13 +12,11 @@ use yii\filters\VerbFilter;
 /**
  * CommentController implements the CRUD actions for Comment model.
  */
-class CommentController extends Controller
-{
+class CommentController extends Controller {
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -33,8 +31,7 @@ class CommentController extends Controller
      * Lists all Comment models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $comments = Comment::find()->orderBy('id desc')->all();
 
         return $this->render('index', [
@@ -42,22 +39,23 @@ class CommentController extends Controller
         ]);
     }
 
-    public function actionAllow($id){
-        $allow=Comment::findOne($id);
+    public function actionAllow($id) {
+        $allow = Comment::findOne($id);
         $allow->status = 1;
         $allow->save(false);
 
         return $this->redirect(['index']);
     }
-    public function actionBlock($id){
-        $block=Comment::findOne($id);
+
+    public function actionBlock($id) {
+        $block = Comment::findOne($id);
         $block->status = 0;
         $block->save(false);
 
         return $this->redirect(['index']);
     }
-    public function actionView($id)
-    {
+
+    public function actionView($id) {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -68,8 +66,7 @@ class CommentController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Comment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -88,8 +85,7 @@ class CommentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -108,8 +104,7 @@ class CommentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -122,8 +117,7 @@ class CommentController extends Controller
      * @return Comment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Comment::findOne($id)) !== null) {
             return $model;
         }

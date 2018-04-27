@@ -26,7 +26,7 @@ class Tag extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'],'required'],
+            [['name'], 'required'],
             [['name'], 'string', 'max' => 15],
         ];
     }
@@ -41,6 +41,7 @@ class Tag extends \yii\db\ActiveRecord
             'name' => 'Name',
         ];
     }
+
     public function getPost()
     {
         return $this->hasMany(Post::className(), ['tag_id' => 'id']);

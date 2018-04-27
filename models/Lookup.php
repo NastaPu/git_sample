@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use yii\helpers\ArrayHelper;
 use Yii;
 
 /**
@@ -12,21 +13,18 @@ use Yii;
  * @property string $type
  * @property int $code
  */
-class Lookup extends \yii\db\ActiveRecord
-{
+class Lookup extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'lookup';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['name', 'code', 'type'], 'required'],
             [['code'], 'integer'],
@@ -39,13 +37,18 @@ class Lookup extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'name' => 'Name',
             'type' => 'Type',
             'code' => 'Code',
         ];
+    }
+
+    public static function items() {
+        $status = Lookup::find()->where(['type' => 'PostStatus'])->all();
+        $items = ArrayHelper::map($status, 'code', 'name');
+        return $items;
     }
 }

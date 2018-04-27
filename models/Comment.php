@@ -17,27 +17,24 @@ use Yii;
  *
  * @property Post $post
  */
-class Comment extends \yii\db\ActiveRecord
-{
+class Comment extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'comment';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['content', 'author'], 'required'],
             [['status', 'post_id'], 'integer'],
-            [['status'],'in','range' => [0,1]],
-            [['create_time'], 'date', 'format'=>'php: Y-m-d'],
-            [['create_time'],'default','value' => date('Y-m-d')],
+            [['status'], 'in', 'range' => [0, 1]],
+            [['create_time'], 'date', 'format' => 'php: Y-m-d'],
+            [['create_time'], 'default', 'value' => date('Y-m-d')],
             [['content'], 'string', 'max' => 200],
             [['author', 'email'], 'string', 'max' => 20],
         ];
@@ -46,8 +43,7 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'content' => 'Content',
@@ -60,8 +56,7 @@ class Comment extends \yii\db\ActiveRecord
     }
 
 
-    public function getPost()
-    {
+    public function getPost() {
         return $this->hasOne(Post::className(), ['id' => 'post_id']);
     }
 }

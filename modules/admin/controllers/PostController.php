@@ -9,18 +9,17 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Tag;
+use app\models\Lookup;
 use yii\helpers\ArrayHelper;
 
 /**
  * PostController implements the CRUD actions for Post model.
  */
-class PostController extends Controller
-{
+class PostController extends Controller {
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -35,8 +34,7 @@ class PostController extends Controller
      * Lists all Post models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $dataProvider = new ActiveDataProvider([
             'query' => Post::find(),
         ]);
@@ -46,40 +44,41 @@ class PostController extends Controller
         ]);
     }
 
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
-    public function actionTag($id)
-    {
+
+    public function actionTag($id) {
         $post = $this->findModel($id);
         $selectTag = $post->tag->id;
         $tag = Tag::find()->all();
-        $items = ArrayHelper::map($tag,'id','name');
+        $items = ArrayHelper::map($tag, 'id', 'name');
 
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $tag_id = Yii::$app->request->post('tag');
             $post->saveTag($tag_id);
-            return $this->redirect(['view','id' => $post->id]);
+            return $this->redirect(['view', 'id' => $post->id]);
         }
 
-        return $this->render('tag',[
+        return $this->render('tag', [
             'post' => $post,
             'selectTag' => $selectTag,
             'items' => $items,
         ]);
 
     }
-    public function actionCreate()
-    {
+
+
+    public function actionCreate() {
         $model = new Post();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
 
         return $this->render('create', [
             'model' => $model,
@@ -93,8 +92,7 @@ class PostController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -110,11 +108,10 @@ class PostController extends Controller
      * Deletes an existing Post model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return mixe
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -127,8 +124,7 @@ class PostController extends Controller
      * @return Post the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Post::findOne($id)) !== null) {
             return $model;
         }

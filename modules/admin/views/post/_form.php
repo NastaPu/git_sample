@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Post */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form yii\widgets\ActiveForm*/
 ?>
 
 <div class="post-form">
@@ -22,15 +22,7 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'create_time')->textInput() ?>
 
-    <?
-    $status=Lookup::find()->where(['type'=>'PostStatus'])->all();
-    $items=ArrayHelper::map($status,'code','name');
-    $params = [
-        'prompt' => 'Укажите статус'
-    ];
-    echo $form->field($model, 'status')->dropDownList($items,$params);?>
-
-
+    <?= $form->field($model, 'status')->dropDownList(Lookup::items()) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
